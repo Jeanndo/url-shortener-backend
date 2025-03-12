@@ -5,6 +5,7 @@ const globalErrorHandler = require("./errorController/errorController");
 require("dotenv").config();
 
 const userRouter = require("./users/routes/users.routes");
+const urlRouter = require("./urls/routes/urls.routes")
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/urls",urlRouter)
 
 app.all("*", (req, res, next) => {
   next(new AppError(`Cant't find ${req.originalUrl} on this server!`, 404));
