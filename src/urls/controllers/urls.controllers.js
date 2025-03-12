@@ -14,9 +14,8 @@ const generateShortCode = () => {
 };
 
 const addUrl = catchAsync(async ({ user: { id }, body }, res, next) => {
+  
   const shortCode = generateShortCode();
-
-  console.log(shortCode);
 
   const newShortCode = await Url.create({
     user_id: id,
