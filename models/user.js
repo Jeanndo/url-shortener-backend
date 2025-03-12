@@ -2,7 +2,9 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    static associate(models) {}
+    static associate({Url}) {
+      this.hasMany(Url,{foreignKey:'user_id',as:'urls'})
+    }
   }
   User.init(
     {
@@ -30,6 +32,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: false,
       },
+      deletedAt:{
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue:null
+      }
     },
     {
       sequelize,

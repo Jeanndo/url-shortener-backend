@@ -1,8 +1,8 @@
 "use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Urls", {
+  async up(queryInterface, DataTypes) {
+    await queryInterface.createTable("urls", {
       id: {
         type: DataTypes.UUID,
         allowNull: false,
@@ -39,9 +39,14 @@ module.exports = {
         type: DataTypes.DATE,
         allowNull: false,
       },
+      deletedAt:{
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue:null
+      }
     });
   },
-  async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Urls");
+  async down(queryInterface, DataTypes) {
+    await queryInterface.dropTable("urls");
   },
 };
