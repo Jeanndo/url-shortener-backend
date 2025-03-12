@@ -4,23 +4,25 @@ const {
   addUrl,
   getUrl,
   getAllUrls,
-  updateUrl,
-  deleteUrl,
-  redirectToOriginalUrl,
+  // updateUrl,
+  // deleteUrl,
+  // redirectToOriginalUrl,
 } = require("./../controllers/urls.controllers");
 
 const { checkAuth } = require("../../middlewares");
 
 const router = express.Router();
 
-router.route("/").get(checkAuth, getAllUrls).post(addUrl);
+router.post("/shorten",checkAuth,addUrl)
 
-router
-  .route("/:code")
-  .get(checkAuth, getUrl)
-  .patch(checkAuth, updateUrl)
-  .delete(checkAuth, deleteUrl);
+router.get("/",checkAuth, getAllUrls);
+router.get("/analytics/:shortUrl",getUrl)
+// router
+//   .route("/:code")
+//   .get(checkAuth, getUrl)
+//   .patch(checkAuth, updateUrl)
+//   .delete(checkAuth, deleteUrl);
 
-router.get("/redirect/:code", redirectToOriginalUrl);
+// router.get("/redirect/:code", redirectToOriginalUrl);
 
 module.exports = router;

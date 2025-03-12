@@ -14,7 +14,7 @@ const generateShortCode = () => {
 };
 
 const addUrl = catchAsync(async ({ user: { id }, body }, res, next) => {
-  
+
   const shortCode = generateShortCode();
 
   const newShortCode = await Url.create({
@@ -32,11 +32,11 @@ const addUrl = catchAsync(async ({ user: { id }, body }, res, next) => {
 });
 
 const getUrl = catchAsync(
-  async ({ user: { id }, params: { code } }, res, next) => {
+  async ({ user: { id }, params: { shortUrl } }, res, next) => {
     const shortCode = await Url.findOne({
       where: {
         user_id: id,
-        short_code: code,
+        short_code: shortUrl,
         deletedAt: null,
       },
     });
