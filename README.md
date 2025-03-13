@@ -30,3 +30,7 @@ Your will need
     - GET: /api/v1/urls/:code  : this api will redirect a user to original url NB: code is short url
     
  
+# SECURITY
+
+  - CSRF PROTECTION
+     - GET: /api/v1/csrf  : this api sends csrf token on frontend and get back on every request from client and get verified on backend
