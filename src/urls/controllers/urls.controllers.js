@@ -179,9 +179,9 @@ const redirectToOriginalUrl = catchAsync(
       return next(new AppError("short url not found", 404));
     }
 
-    res.redirect(shortCode.long_url);
+    await shortCode.increment("clicks",{by:1})
 
-    return sendResponse(res, 200, "Redirected successfully!", shortCode);
+    res.redirect(shortCode.long_url);
   }
 );
 
@@ -192,4 +192,5 @@ module.exports = {
   updateUrl,
   deleteUrl,
   redirectToOriginalUrl,
+  updateUrlClicks
 };
