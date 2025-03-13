@@ -4,7 +4,7 @@ PROJECT SETUP
 
 Your will need 
 
-1 Database installed (PostgreSQL,MySQL) maybe PgAdmin or your favorite GUI for easy database interaction
+1 Database installed (PostgreSQL,MySQL), and maybe PgAdmin or your favorite GUI for easy database interaction
 
  Then clone the repository
 
