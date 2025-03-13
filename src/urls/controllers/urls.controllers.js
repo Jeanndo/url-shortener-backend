@@ -62,7 +62,7 @@ const getUrl = catchAsync(
 );
 
 const getAllUrls = catchAsync(
-  async ({ user: { id }, query: { limit = 10, page = 1 } }, res, next) => {
+  async ({ user: { id }, query: { limit = 100, page = 1 } }, res, next) => {
     const pagination = paginate(page, limit);
 
     const user = await User.findOne({
