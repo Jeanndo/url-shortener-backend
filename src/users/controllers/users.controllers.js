@@ -26,22 +26,23 @@ const signUp = catchAsync(async ({ body }, res, next) => {
   }
 
   const createdUser = await User.create({
-    ...body,
-    password: await hashPassword(body.password),
+    email:body.email,
+    username:body.username,
+    password_hash: await hashPassword(body.password),
   });
 
-  const { password, ...createdUserWithNoPassword } = createdUser.dataValues;
+  const { password_hash, ...createdUserWithNoPassword } = createdUser.dataValues;
 
   return sendResponse(res, 201, "Account created", createdUserWithNoPassword);
 });
 
 
 const login = catchAsync(async (req, res, next) => {
-  const { phoneNumber, password } = req.body;
+  const { email, password } = req.body;
 
   const user = await User.findOne({
     where: {
-      phoneNumber,
+      email,
       deletedAt: null,
     },
   });
@@ -50,7 +51,7 @@ const login = catchAsync(async (req, res, next) => {
     return next(new AppError("Invalid Credentials", 403));
   }
 
-  const isPasswordMatching = await comparePassword(password, user?.password);
+  const isPasswordMatching = await comparePassword(password, user?.password_hash);
 
   if (!isPasswordMatching) {
     return next(new AppError("Invalid Credentials", 403));
@@ -60,8 +61,11 @@ const login = catchAsync(async (req, res, next) => {
     id: user.id,
   });
 
+  const foundUser = {password_hash,...userWithoutPassword} = user.dataValues
+
   return sendResponse(res, 200, "Logged in Successful", {
     token: accessToken,
+    user:userWithoutPassword
   });
 });
 
