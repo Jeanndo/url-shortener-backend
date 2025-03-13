@@ -9,14 +9,14 @@ const {
   redirectToOriginalUrl,
 } = require("./../controllers/urls.controllers");
 
-const { checkAuth } = require("../../middlewares");
+const { checkAuth,checkCsrfToken } = require("../../middlewares");
 
 const router = express.Router();
 
-router.post("/shorten",checkAuth,shortenUrl)
+router.post("/shorten",checkAuth,checkCsrfToken,shortenUrl)
 
-router.get("/",checkAuth, getAllUrls);
-router.get("/analytics/:shortUrl",getUrl)
+router.get("/",checkAuth,checkCsrfToken, getAllUrls);
+router.get("/analytics/:shortUrl",checkAuth,checkCsrfToken,getUrl)
 // router
 //   .route("/:code")
 //   .get(checkAuth, getUrl)

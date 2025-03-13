@@ -1,13 +1,12 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Url extends Model {
-    static associate({ User, Analytics }) {
-      this.belongsTo(User, { foreignKey: "user_id", as: "user" });
-      this.hasMany(Analytics, { foreignKey: "urlId", as: "stats" });
+  class Analytics extends Model {
+    static associate({ Url }) {
+      this.belongsTo(Url, { foreignKey: "urlId", as: "url" });
     }
   }
-  Url.init(
+  Analytics.init(
     {
       id: {
         type: DataTypes.UUID,
@@ -15,31 +14,18 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
       },
-      user_id: {
+      urlId: {
         type: DataTypes.UUID,
         references: {
-          model: "users",
+          model: "urls",
           key: "id",
         },
         allowNull: false,
         onDelete: "RESTRICT",
         onUpdate: "CASCADE",
       },
-      title: {
+      deviceType: {
         type: DataTypes.STRING,
-        allowNull: false,
-      },
-      short_code: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      long_url: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      clicks: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0,
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -57,9 +43,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      tableName: "urls",
-      modelName: "Url",
+      tableName: "analytics",
+      modelName: "Analytics",
     }
   );
-  return Url;
+  return Analytics;
 };

@@ -1,9 +1,12 @@
-const { Url, User } = require("../../../models");
+const { Url, User,Analytics } = require("../../../models");
 const catchAsync = require("../../utils/catchAsync");
 const AppError = require("../../utils/appError");
 const { paginate } = require("../../utils/paginate");
 const { sendResponse } = require("../../utils/response");
 const { v4: uuidv4 } = require('uuid');
+const UAParser = require("ua-parser-js");
+const { isValidURL } = require("../../utils/urlValidator");
+
 
 require("dotenv").config();
 
@@ -12,6 +15,10 @@ const generateShortCode = () => {
 };
 
 const shortenUrl = catchAsync(async ({ user: { id }, body }, res, next) => {
+
+  if(!isValidURL(body.long_url)){
+      return next(new AppError("Invalid url",400))
+  }
 
   const shortCode = generateShortCode();
 
@@ -33,6 +40,12 @@ const shortenUrl = catchAsync(async ({ user: { id }, body }, res, next) => {
 const getUrl = catchAsync(
   async ({ user: { id }, params: { shortUrl } }, res, next) => {
     const shortCode = await Url.findOne({
+      include:[
+        {
+          model:Analytics,
+          as:'stats'
+        }
+      ],
       where: {
         user_id: id,
         short_code: shortUrl,
@@ -166,7 +179,7 @@ const deleteUrl = catchAsync(
 );
 
 const redirectToOriginalUrl = catchAsync(
-  async ({ params: { code } }, res, next) => {
+  async ({ params: { code },headers }, res, next) => {
     
     const shortCode = await Url.findOne({
       where: {
@@ -179,9 +192,17 @@ const redirectToOriginalUrl = catchAsync(
       return next(new AppError("short url not found", 404));
     }
 
-    res.redirect(shortCode.long_url);
+    await shortCode.increment("clicks",{by:1})
 
-    return sendResponse(res, 200, "Redirected successfully!", shortCode);
+    const parser = new UAParser(headers["user-agent"]);
+    const deviceType = parser.getDevice().type || "desktop";
+
+    await Analytics.create({
+      urlId:shortCode.id,
+      deviceType:deviceType
+    })
+
+    res.redirect(shortCode.long_url);
   }
 );
 
@@ -193,3 +214,5 @@ module.exports = {
   deleteUrl,
   redirectToOriginalUrl,
 };
+
+
