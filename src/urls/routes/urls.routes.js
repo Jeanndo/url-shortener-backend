@@ -6,7 +6,7 @@ const {
   getAllUrls,
   // updateUrl,
   // deleteUrl,
-  // redirectToOriginalUrl,
+  redirectToOriginalUrl,
 } = require("./../controllers/urls.controllers");
 
 const { checkAuth } = require("../../middlewares");
@@ -23,6 +23,6 @@ router.get("/analytics/:shortUrl",getUrl)
 //   .patch(checkAuth, updateUrl)
 //   .delete(checkAuth, deleteUrl);
 
-// router.get("/redirect/:code", redirectToOriginalUrl);
+router.get("/:code", redirectToOriginalUrl);
 
 module.exports = router;

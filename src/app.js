@@ -5,7 +5,8 @@ const globalErrorHandler = require("./errorController/errorController");
 require("dotenv").config();
 
 const userRouter = require("./users/routes/users.routes");
-const urlRouter = require("./urls/routes/urls.routes")
+const urlRouter = require("./urls/routes/urls.routes");
+const AppError = require("./utils/appError");
 
 const app = express();
 
