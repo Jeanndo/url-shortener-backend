@@ -192,5 +192,4 @@ module.exports = {
   updateUrl,
   deleteUrl,
   redirectToOriginalUrl,
-  updateUrlClicks
 };
