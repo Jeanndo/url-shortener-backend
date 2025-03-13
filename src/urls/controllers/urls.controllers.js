@@ -5,8 +5,6 @@ const { paginate } = require("../../utils/paginate");
 const { sendResponse } = require("../../utils/response");
 const { v4: uuidv4 } = require('uuid');
 
-const { response } = require("express");
-
 require("dotenv").config();
 
 const generateShortCode = () => {
@@ -21,6 +19,7 @@ const shortenUrl = catchAsync(async ({ user: { id }, body }, res, next) => {
     user_id: id,
     short_code: shortCode,
     long_url: body.long_url,
+    title:body.title
   });
 
   return sendResponse(
@@ -45,7 +44,7 @@ const getUrl = catchAsync(
       return next(new AppError("short url not found", 404));
     }
 
-    return response(res, 200, "Retrieved!", shortCode);
+    return sendResponse(res, 200, "Retrieved!", shortCode);
   }
 );
 
@@ -64,7 +63,7 @@ const getAllUrls = catchAsync(
       return next(new AppError("Access Denied!", 400));
     }
 
-    const urls = await Url.findAndCountAll({
+    let urls = await Url.findAndCountAll({
       where: {
         user_id: id,
         deletedAt: null,
@@ -77,7 +76,7 @@ const getAllUrls = catchAsync(
 
     urls = { ...urls, page };
 
-    return response(res, 200, "Urls Retrieved", urls);
+    return sendResponse(res, 200, "Urls Retrieved", urls);
   }
 );
 
@@ -119,7 +118,7 @@ const updateUrl = catchAsync(
       }
     );
 
-    return response(res, 200, "short url uppdated");
+    return sendResponse(res, 200, "short url uppdated");
   }
 );
 
@@ -162,7 +161,7 @@ const deleteUrl = catchAsync(
       }
     );
 
-    return response(res, 200, "short url deleted successfully!");
+    return sendResponse(res, 200, "short url deleted successfully!");
   }
 );
 
@@ -182,7 +181,7 @@ const redirectToOriginalUrl = catchAsync(
 
     res.redirect(shortCode.long_url);
 
-    return response(res, 200, "Redirected successfully!", shortCode);
+    return sendResponse(res, 200, "Redirected successfully!", shortCode);
   }
 );
 

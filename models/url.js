@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "RESTRICT",
         onUpdate: "CASCADE",
       },
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       short_code: {
         type: DataTypes.STRING,
         allowNull: false,
