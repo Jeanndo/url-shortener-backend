@@ -1,7 +1,7 @@
 const express = require("express");
 
 const {
-  addUrl,
+  shortenUrl,
   getUrl,
   getAllUrls,
   // updateUrl,
@@ -13,7 +13,7 @@ const { checkAuth } = require("../../middlewares");
 
 const router = express.Router();
 
-router.post("/shorten",checkAuth,addUrl)
+router.post("/shorten",checkAuth,shortenUrl)
 
 router.get("/",checkAuth, getAllUrls);
 router.get("/analytics/:shortUrl",getUrl)

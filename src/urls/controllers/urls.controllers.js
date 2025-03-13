@@ -10,10 +10,10 @@ const { response } = require("express");
 require("dotenv").config();
 
 const generateShortCode = () => {
-  return uuidv4().slice(0, 6);
+  return uuidv4().slice(0, 7).toLocaleUpperCase()
 };
 
-const addUrl = catchAsync(async ({ user: { id }, body }, res, next) => {
+const shortenUrl = catchAsync(async ({ user: { id }, body }, res, next) => {
 
   const shortCode = generateShortCode();
 
@@ -187,7 +187,7 @@ const redirectToOriginalUrl = catchAsync(
 );
 
 module.exports = {
-  addUrl,
+  shortenUrl,
   getUrl,
   getAllUrls,
   updateUrl,
