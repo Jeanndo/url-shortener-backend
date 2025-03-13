@@ -3,6 +3,8 @@ const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
+const csrf = require("csurf");
+
 
 require("dotenv").config();
 
@@ -62,4 +64,37 @@ const joiValidator = (schema) => catchAsync(async (req, res, next) => {
     next();
   });
 
-module.exports = { checkAuth, joiValidator };
+
+  const csrfMiddleware = csrf({
+    cookie: {
+       key: "_csrf",
+      httpOnly: true,  
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Strict",
+    },
+  });
+
+
+  const checkCsrfToken = catchAsync(async(req, res, next)=>{
+
+    console.log("req.cookies",req.cookies["_csrf"])
+    const csrfTokenFromCookie = req.cookies["_csrf"];
+
+    const csrfTokenFromHeader = req.headers['x-csrf-token'];
+
+    console.log("csrfTokenFromHeader",csrfTokenFromHeader)
+
+    if (!csrfTokenFromCookie || !csrfTokenFromHeader) {
+      return res.status(403).json({ error: 'Missing CSRF token in cookie or header' });
+    }
+
+    if(csrfTokenFromCookie!==csrfTokenFromHeader){
+      return next(new AppError("Invalid CSRF token"))
+    }
+
+    next()
+
+  })
+
+
+module.exports = { checkAuth, joiValidator,checkCsrfToken,csrfMiddleware};
