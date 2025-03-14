@@ -14,7 +14,16 @@
     "seed:undo": "npx sequelize-cli db:seed:undo",
     "seed:undo:all": "npx sequelize-cli db:seed:undo:all",
     "create": "npx sequelize-cli db:create",
-    "drop:db": "npx sequelize-cli db:drop"
+    "drop:db": "npx sequelize-cli db:drop",
+    "test": "cross-env NODE_ENV=test  jest --coverage --testTimeout=10000",
+    "pretest": "cross-env NODE_ENV=test npm run migrate"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "verbose": true
   },
   "repository": {
     "type": "git",
@@ -46,6 +55,9 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "sequelize-cli": "^6.6.2"
+    "cross-env": "^7.0.3",
+    "jest": "^29.7.0",
+    "sequelize-cli": "^6.6.2",
+    "supertest": "^7.0.0"
   }
 }
