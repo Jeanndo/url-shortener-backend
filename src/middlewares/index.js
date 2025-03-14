@@ -77,12 +77,9 @@ const joiValidator = (schema) => catchAsync(async (req, res, next) => {
 
   const checkCsrfToken = catchAsync(async(req, res, next)=>{
 
-    console.log("req.cookies",req.cookies["_csrf"])
     const csrfTokenFromCookie = req.cookies["_csrf"];
 
     const csrfTokenFromHeader = req.headers['x-csrf-token'];
-
-    console.log("csrfTokenFromHeader",csrfTokenFromHeader)
 
     if (!csrfTokenFromCookie || !csrfTokenFromHeader) {
       return res.status(403).json({ error: 'Missing CSRF token in cookie or header' });
