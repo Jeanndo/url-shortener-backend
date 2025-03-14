@@ -28,8 +28,13 @@ Your will need
     - GET: /api/v1/urls/  : get all individual urls
     - GET: /api/v1/urls//analytics/:shortUrl : get a url analytics (this includes clicks and devices visited a url)
     - GET: /api/v1/urls/:code  : this api will redirect a user to original url NB: code is short url
-    
- 
+
+ - RUNNING TEST SUITES
+   - npm run test
+
+ # TEST COVERAGE 
+ <img width="400" alt="image" src="https://github.com/user-attachments/assets/6fd3bade-754f-4d03-b5c5-59373c0e446f" />
+
 # SECURITY
 
   - CSRF PROTECTION
