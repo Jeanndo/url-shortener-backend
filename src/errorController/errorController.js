@@ -1,5 +1,6 @@
 module.exports = (err, req, res, next) => {
     if (err.message.includes("jwt expired")) err.statusCode = 401
+    if (err.message.includes("jwt malformed")) err.statusCode = 401
     else err.statusCode = err.statusCode || 500
     err.status = err.status || 'error'
     res.status(err.statusCode).json({

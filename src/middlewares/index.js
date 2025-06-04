@@ -67,7 +67,7 @@ const joiValidator = (schema) => catchAsync(async (req, res, next) => {
 
   const csrfMiddleware = csrf({
     cookie: {
-       key: "_csrf",
+      key: "_csrf",
       httpOnly: true,  
       secure: process.env.NODE_ENV === "production",
       sameSite: "Strict",
