@@ -94,7 +94,10 @@ const getAllUrls = catchAsync(
 );
 
 const updateUrl = catchAsync(
-  async ({ user: { id }, params: { code } }, res, next) => {
+  async ({ user: { id }, params: { code },body }, res, next) => {
+
+    const {long_url} = body
+
     const user = await User.findOne({
       where: {
         id,
@@ -120,7 +123,7 @@ const updateUrl = catchAsync(
 
     await Url.update(
       {
-        short_code: generateShortCode(),
+        long_url
       },
       {
         where: {
@@ -131,7 +134,7 @@ const updateUrl = catchAsync(
       }
     );
 
-    return sendResponse(res, 200, "short url uppdated");
+    return sendResponse(res, 200, "url uppdated");
   }
 );
 
@@ -174,7 +177,7 @@ const deleteUrl = catchAsync(
       }
     );
 
-    return sendResponse(res, 200, "short url deleted successfully!");
+    return sendResponse(res, 200, "url deleted successfully!");
   }
 );
 

@@ -4,8 +4,8 @@ const {
   shortenUrl,
   getUrl,
   getAllUrls,
-  // updateUrl,
-  // deleteUrl,
+  updateUrl,
+  deleteUrl,
   redirectToOriginalUrl,
 } = require("./../controllers/urls.controllers");
 
@@ -17,12 +17,11 @@ router.post("/shorten",checkAuth,checkCsrfToken,shortenUrl)
 
 router.get("/",checkAuth,checkCsrfToken, getAllUrls);
 router.get("/analytics/:shortUrl",checkAuth,checkCsrfToken,getUrl)
-// router
-//   .route("/:code")
-//   .get(checkAuth, getUrl)
-//   .patch(checkAuth, updateUrl)
-//   .delete(checkAuth, deleteUrl);
+router
+.route("/:code")
+.get(redirectToOriginalUrl)
+.patch(checkAuth, updateUrl)
+.delete(checkAuth, deleteUrl);
 
-router.get("/:code", redirectToOriginalUrl);
 
 module.exports = router;
